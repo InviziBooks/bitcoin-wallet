@@ -145,6 +145,31 @@
 		android:layout_marginTop="8dp"
 		android:text="@string/send_coins_fragment_direct_payment_enable" />
 
+	<LinearLayout
+		android:id="@+id/send_coins_account_group"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp"
+		android:layout_marginBottom="@dimen/list_entry_padding_vertical"
+		android:layout_marginLeft="@dimen/list_entry_padding_horizontal"
+		android:layout_marginRight="@dimen/list_entry_padding_horizontal"
+		android:divider="@drawable/divider_field"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Account"
+			android:textSize="@dimen/font_size_small"
+			android:textStyle="bold" />
+
+		<Spinner
+			android:id="@+id/send_coins_account"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+	</LinearLayout>
+
 	<Space
 		android:layout_width="0px"
 		android:layout_height="0px"

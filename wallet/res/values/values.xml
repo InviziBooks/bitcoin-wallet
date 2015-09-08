@@ -21,4 +21,11 @@
 		<item>@string/preferences_precision_labels_0_6</item>
 	</string-array>
 
+		<string-array name="account_types">
+			<item>Office expense</item>
+			<item>Fixtures and equipment</item>
+			<item>Rent</item>
+			<item>Subcontractors</item>
+			<item>Utilities</item>
+		</string-array>
 </resources>

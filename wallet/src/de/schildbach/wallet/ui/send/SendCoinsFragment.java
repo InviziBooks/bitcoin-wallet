@@ -81,6 +81,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -90,6 +91,7 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import de.schildbach.wallet.AddressBookProvider;
 import de.schildbach.wallet.Configuration;
@@ -384,6 +386,7 @@ public final class SendCoinsFragment extends Fragment
 			labelView.setText(label);
 			final TextView addressView = (TextView) viewGroup.findViewById(R.id.address_book_row_address);
 			addressView.setText(WalletUtils.formatHash(address, Constants.ADDRESS_FORMAT_GROUP_SIZE, Constants.ADDRESS_FORMAT_LINE_SIZE));
+
 		}
 
 		@Override
@@ -572,6 +575,11 @@ public final class SendCoinsFragment extends Fragment
 				handleCancel();
 			}
 		});
+
+		Spinner spinner = (Spinner) view.findViewById(R.id.send_coins_account);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.account_types, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
 
 		return view;
 	}
