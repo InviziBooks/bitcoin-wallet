@@ -40,6 +40,7 @@ import org.bitcoinj.core.Wallet.CouldNotAdjustDownwards;
 import org.bitcoinj.core.Wallet.DustySendRequested;
 import org.bitcoinj.core.Wallet.SendRequest;
 import org.bitcoinj.protocols.payments.PaymentProtocol;
+import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.utils.MonetaryFormat;
 import org.bitcoinj.wallet.KeyChain.KeyPurpose;
 import org.slf4j.Logger;
@@ -149,6 +150,7 @@ public final class SendCoinsFragment extends Fragment
 	private TextView receivingStaticLabelView;
 	private View amountGroup;
 	private CurrencyCalculatorLink amountCalculatorLink;
+	private Spinner sendCoinsAccount;
 	private CheckBox directPaymentEnableView;
 
 	private TextView hintView;
@@ -520,6 +522,8 @@ public final class SendCoinsFragment extends Fragment
 		localAmountView.setHintFormat(Constants.LOCAL_FORMAT);
 		amountCalculatorLink = new CurrencyCalculatorLink(btcAmountView, localAmountView);
 		amountCalculatorLink.setExchangeDirection(config.getLastExchangeDirection());
+
+		sendCoinsAccount = (Spinner) view.findViewById(R.id.send_coins_account);
 
 		directPaymentEnableView = (CheckBox) view.findViewById(R.id.send_coins_direct_payment_enable);
 		directPaymentEnableView.setOnCheckedChangeListener(new OnCheckedChangeListener()
@@ -910,6 +914,8 @@ public final class SendCoinsFragment extends Fragment
 		sendRequest.memo = paymentIntent.memo;
 		sendRequest.exchangeRate = amountCalculatorLink.getExchangeRate();
 		sendRequest.aesKey = encryptionKey;
+		final Object selected = sendCoinsAccount.getSelectedItem();
+		sendRequest.tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(selected.toString().getBytes()));
 
 		new SendCoinsOfflineTask(wallet, backgroundHandler)
 		{
@@ -1101,6 +1107,7 @@ public final class SendCoinsFragment extends Fragment
 			dryrunException = null;
 
 			final Coin amount = amountCalculatorLink.getAmount();
+			final Object selected = sendCoinsAccount.getSelectedItem();
 			if (amount != null)
 			{
 				try
@@ -1110,6 +1117,9 @@ public final class SendCoinsFragment extends Fragment
 					sendRequest.signInputs = false;
 					sendRequest.emptyWallet = paymentIntent.mayEditAmount() && amount.equals(wallet.getBalance(BalanceType.AVAILABLE));
 					sendRequest.feePerKb = feeCategory.feePerKb;
+					sendRequest.tx.addOutput(Coin.ZERO, ScriptBuilder.createOpReturnScript(selected.toString().getBytes()));
+
+
 					wallet.completeTx(sendRequest);
 					dryrunTransaction = sendRequest.tx;
 				}
